@@ -2,17 +2,15 @@ package ti.lsm.henrique.io
 
 import io.kotlintest.matchers.boolean.shouldBeTrue
 import io.kotlintest.specs.AnnotationSpec
-import io.micronaut.context.ApplicationContext
 
 class ProcessExecutorSpec : AnnotationSpec() {
 
     @Test
     fun testProcessOutputFlowable() {
-        val context = ApplicationContext.run()
-        val executor = context.getBean(ProcessExecutor::class.java)
+        val executor = ProcessExecutor("ping", "-c 4", "localhost")
 
         val list = mutableListOf<String>()
-        val flowable = executor.start("ping", "-c 4", "localhost")
+        val flowable = executor.start()
         flowable.subscribe {
             list.add(it)
         }
@@ -22,6 +20,5 @@ class ProcessExecutorSpec : AnnotationSpec() {
         }
         list.isNotEmpty().shouldBeTrue()
         executor.close()
-        context.close()
     }
 }

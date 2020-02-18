@@ -12,13 +12,15 @@ import java.util.concurrent.Executors
 
 
 @Prototype
-class ProcessExecutor : Closeable {
+class ProcessExecutor(vararg command: String) : Closeable {
 
     lateinit var inputStream: BufferedReader
     lateinit var process: Process
     private var closed = false
     private val log = logger()
     private val pool = Executors.newFixedThreadPool(1)
+
+    private val command: List<String> = command.toList()
 
     override fun close() {
         closed = true
@@ -31,11 +33,10 @@ class ProcessExecutor : Closeable {
         return !process.isAlive
     }
 
-
-    fun start(vararg command: String): Flowable<String> {
+    fun start(): Flowable<String> {
 
         val observable = PublishSubject.create<String>()
-        val pocessBuilder = ProcessBuilder(command.asList())
+        val pocessBuilder = ProcessBuilder(command)
         process = pocessBuilder.start()
         inputStream = BufferedReader(InputStreamReader(process.inputStream))
         pool.submit {
