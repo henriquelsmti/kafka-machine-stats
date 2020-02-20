@@ -7,10 +7,7 @@ import io.kotlintest.specs.AnnotationSpec
 import io.micronaut.context.ApplicationContext
 import io.reactivex.Flowable
 import ti.lsm.henrique.io.process.MockProcessExecutor
-import ti.lsm.henrique.model.KafkaRecord
-import ti.lsm.henrique.model.LoadAverage
-import ti.lsm.henrique.model.LostRecord
-import ti.lsm.henrique.model.TopRecord
+import ti.lsm.henrique.model.*
 import java.time.Duration
 import java.time.LocalTime
 
@@ -64,6 +61,43 @@ class TopProcessSpec : AnnotationSpec() {
         val lostRecord = list.find { it is LostRecord }
         lostRecord.shouldNotBeNull()
         lostRecord.shouldBe(LostRecord(key = computerIdentifier.id, line = lostLine))
+    }
 
+    @Test
+    fun testTopProcessProduce() {
+        val mockProcessExecutor = context.getBean(MockProcessExecutor::class.java)
+        mockProcessExecutor.flowable = Flowable.just(
+                "top - 20:23:27 up 16 min,  1 user,  load average: 0.54, 0.86, 0.78",
+                "Tasks: 268 total,   1 running, 267 sleeping,   0 stopped,   0 zombie"
+        )
+        val stream = topProcessReader.init()
+        val list = mutableListOf<KafkaRecord>()
+        stream.subscribe {
+            list.add(it)
+        }
+        list.isNotEmpty().shouldBeTrue()
+        val topRecord = list.find { it is TopRecord }
+        topRecord.shouldNotBeNull()
+        topRecord.shouldBe(TopRecord(
+                key = computerIdentifier.id,
+                time = LocalTime.of(20, 23, 27),
+                upTime = Duration.ofMinutes(16),
+                users = 1,
+                loadAverage = LoadAverage(
+                        lastMinute = 0.54,
+                        lastFiveMinutes = 0.86,
+                        lastFifteenMinutes = 0.78
+                )
+        ))
+        val tasksRecord = list.find { it is TasksRecord }
+        tasksRecord.shouldNotBeNull()
+        tasksRecord.shouldBe(TasksRecord(
+                key = computerIdentifier.id,
+                total = 268,
+                running = 1,
+                sleeping = 267,
+                stopped = 0,
+                zombie = 0
+        ))
     }
 }
