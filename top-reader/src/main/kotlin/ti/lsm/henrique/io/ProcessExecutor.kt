@@ -5,6 +5,7 @@ import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.subjects.PublishSubject
 import org.apache.logging.log4j.kotlin.logger
+import ti.lsm.henrique.io.exceptions.IOException
 import java.io.BufferedReader
 import java.io.Closeable
 import java.io.InputStreamReader
@@ -12,31 +13,37 @@ import java.util.concurrent.Executors
 
 
 @Prototype
-class ProcessExecutor(vararg command: String) : Closeable {
+class ProcessExecutor : Closeable {
 
     lateinit var inputStream: BufferedReader
     lateinit var process: Process
     private var closed = false
     private val log = logger()
     private val pool = Executors.newFixedThreadPool(1)
-
-    private val command: List<String> = command.toList()
+    private var started: Boolean = false
 
     override fun close() {
         closed = true
+        pool.shutdown()
         inputStream.close()
         process.destroy()
-        pool.shutdown()
     }
 
     fun isStoped(): Boolean {
         return !process.isAlive
     }
 
-    fun start(): Flowable<String> {
+
+    fun start(vararg command: String): Flowable<String> {
+
+        if (started) {
+            throw IOException("ProcessExecutor started!")
+        }
+
+        started = true
 
         val observable = PublishSubject.create<String>()
-        val pocessBuilder = ProcessBuilder(command)
+        val pocessBuilder = ProcessBuilder(command.asList())
         process = pocessBuilder.start()
         inputStream = BufferedReader(InputStreamReader(process.inputStream))
         pool.submit {

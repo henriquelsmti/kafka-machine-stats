@@ -14,7 +14,7 @@ import javax.inject.Singleton
 class TopProcess {
 
     @Inject
-    lateinit var computerIdentifier: ComputerIdentifier
+    lateinit var executor: ProcessExecutor
 
     private val log = logger()
 
@@ -24,9 +24,8 @@ class TopProcess {
 
     fun init(): Flowable<KafkaRecord> {
         Application.context.getBeansOfType(TopReader::class.java)
-        val executor = ProcessExecutor("top", "-b")
 
-        val stream = executor.start().map { line ->
+        val stream = executor.start("top", "-b").map { line ->
             val key = lineReaders.keys.find { regex ->
                 regex.matches(line)
             }
