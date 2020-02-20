@@ -2,28 +2,32 @@ package ti.lsm.henrique.io
 
 import io.reactivex.Flowable
 import org.apache.logging.log4j.kotlin.logger
-import ti.lsm.henrique.Application
-import ti.lsm.henrique.io.linereader.LineReader
-import ti.lsm.henrique.io.linereader.TopLineReader
 import ti.lsm.henrique.io.linereader.TopReader
+import ti.lsm.henrique.io.process.ProcessExecutor
 import ti.lsm.henrique.model.KafkaRecord
+import ti.lsm.henrique.model.LostRecord
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class TopProcess {
+class TopProcessReader : ProcessReader {
+
+    @Inject
+    lateinit var computerIdentifier: ComputerIdentifier
 
     @Inject
     lateinit var executor: ProcessExecutor
 
+    @Inject
+    lateinit var lineReaders: List<TopReader<*>>
+
     private val log = logger()
 
-    private val lineReaders = mapOf<Regex, LineReader<*>>(
-            TopLineReader.regex to TopLineReader()
-    )
+    override fun init(): Flowable<KafkaRecord> {
 
-    fun init(): Flowable<KafkaRecord> {
-        Application.context.getBeansOfType(TopReader::class.java)
+        val lineReaders = this.lineReaders.associate {
+            it.regex to it
+        }
 
         val stream = executor.start("top", "-b").map { line ->
             val key = lineReaders.keys.find { regex ->
@@ -32,17 +36,18 @@ class TopProcess {
             line to key
         }
 
-        stream.filter {
+        val lost = stream.filter {
             it.second == null
-        }.subscribe {
+        }.map {
             log.warn("line is not readable" to it.first)
+            LostRecord(computerIdentifier.id, it.first)
         }
 
         return stream.filter {
             it.second != null
         }.map {
             lineReaders[it.second]!!.read(it.first)
-        }
+        }.mergeWith(lost)
     }
 
 }

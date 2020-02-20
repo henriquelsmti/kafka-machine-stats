@@ -1,4 +1,4 @@
-package ti.lsm.henrique.io
+package ti.lsm.henrique.io.process
 
 import io.micronaut.context.annotation.Prototype
 import io.reactivex.BackpressureStrategy
@@ -7,17 +7,16 @@ import io.reactivex.subjects.PublishSubject
 import org.apache.logging.log4j.kotlin.logger
 import ti.lsm.henrique.io.exceptions.IOException
 import java.io.BufferedReader
-import java.io.Closeable
 import java.io.InputStreamReader
 import java.util.concurrent.Executors
 
 
 @Prototype
-class ProcessExecutor : Closeable {
+class ProcessExecutorImp : ProcessExecutor {
 
-    lateinit var inputStream: BufferedReader
-    lateinit var process: Process
+    private lateinit var process: Process
     private var closed = false
+    private lateinit var inputStream: BufferedReader
     private val log = logger()
     private val pool = Executors.newFixedThreadPool(1)
     private var started: Boolean = false
@@ -29,12 +28,12 @@ class ProcessExecutor : Closeable {
         process.destroy()
     }
 
-    fun isStoped(): Boolean {
+    override fun isStoped(): Boolean {
         return !process.isAlive
     }
 
 
-    fun start(vararg command: String): Flowable<String> {
+    override fun start(vararg command: String): Flowable<String> {
 
         if (started) {
             throw IOException("ProcessExecutor started!")

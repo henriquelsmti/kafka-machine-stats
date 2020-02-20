@@ -4,4 +4,5 @@ import ti.lsm.henrique.model.KafkaRecord
 
 interface LineReader<out T : KafkaRecord> {
     fun read(line: String): T
+    val regex: Regex
 }
