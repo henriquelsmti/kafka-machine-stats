@@ -35,6 +35,8 @@ dependencies {
     runtimeOnly "ch.qos.logback:logback-classic:1.2.3"
 
     compile "org.apache.logging.log4j:log4j-api-kotlin:1.0.0"
+    compile group: 'com.github.oshi', name: 'oshi-core', version: '4.4.0'
+
 
     testImplementation platform("io.micronaut:micronaut-bom:$micronautVersion")
     testImplementation "io.micronaut.test:micronaut-test-kotlintest"
