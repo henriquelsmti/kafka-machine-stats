@@ -5,4 +5,4 @@ data class MemoryStatsRecord(override val key: String,
                              val free:Double,
                              val used:Double,
                              val buffCache:Double
-) : KafkaRecord(key, "cpu-stats-record")
+) : KafkaRecord(key, "memory-stats-record")
