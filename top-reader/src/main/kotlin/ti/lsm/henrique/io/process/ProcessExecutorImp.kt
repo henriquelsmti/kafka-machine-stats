@@ -47,7 +47,6 @@ class ProcessExecutorImp : ProcessExecutor {
         inputStream = BufferedReader(InputStreamReader(process.inputStream))
         pool.submit {
             try {
-
                 while (true) {
                     val line = inputStream.readLine()
                     if (line != null) {

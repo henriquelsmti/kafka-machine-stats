@@ -10,8 +10,7 @@ class ProcessExecutorSpec : AnnotationSpec() {
 
     @Test
     fun testProcessOutputFlowable() {
-        val context = ApplicationContext.run()
-        val executor = context.getBean(ProcessExecutor::class.java)
+        val executor = ProcessExecutorImp()
 
         val list = mutableListOf<String>()
         val flowable = executor.start("ping", "-c 4", "localhost")
@@ -24,20 +23,16 @@ class ProcessExecutorSpec : AnnotationSpec() {
         }
         list.isNotEmpty().shouldBeTrue()
         executor.close()
-        context.close()
     }
 
     @Test
     fun testFallStartAnyTimes() {
-        val context = ApplicationContext.run()
-        val executor = context.getBean(ProcessExecutorImp::class.java)
+        val executor = ProcessExecutorImp()
 
         shouldThrow<IOException> {
             executor.start("ping", "-c 4", "localhost")
             executor.start("ping", "-c 4", "localhost")
-
         }
         executor.close()
-        context.close()
     }
 }
