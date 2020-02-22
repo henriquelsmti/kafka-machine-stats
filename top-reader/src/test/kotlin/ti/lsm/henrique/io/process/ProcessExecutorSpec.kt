@@ -12,7 +12,7 @@ class ProcessExecutorSpec : AnnotationSpec() {
         val executor = ProcessExecutorImp()
 
         val list = mutableListOf<String>()
-        val flowable = executor.start("ping", "-c 4", "localhost")
+        val flowable = executor.start(listOf("ping", "-c 4", "localhost"))
         flowable.subscribe {
             list.add(it)
         }
@@ -29,8 +29,8 @@ class ProcessExecutorSpec : AnnotationSpec() {
         val executor = ProcessExecutorImp()
 
         shouldThrow<IOException> {
-            executor.start("ping", "-c 4", "localhost")
-            executor.start("ping", "-c 4", "localhost")
+            executor.start(listOf("ping", "-c 4", "localhost"))
+            executor.start(listOf("ping", "-c 4", "localhost"))
         }
         executor.close()
     }

@@ -35,7 +35,7 @@ class ProcessExecutorImp : ProcessExecutor {
     }
 
 
-    override fun start(vararg command: String): Flowable<String> {
+    override fun start(command:List<String>): Flowable<String> {
 
         if (started) {
             throw IOException("ProcessExecutor started!")
@@ -44,7 +44,7 @@ class ProcessExecutorImp : ProcessExecutor {
         started = true
 
         val observable = PublishSubject.create<String>()
-        val pocessBuilder = ProcessBuilder(command.asList())
+        val pocessBuilder = ProcessBuilder(command)
         pocessBuilder.environment()["LC_ALL"] = "C"
         process = pocessBuilder.start()
         inputStream = BufferedReader(InputStreamReader(process.inputStream))

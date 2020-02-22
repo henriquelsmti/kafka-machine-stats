@@ -15,7 +15,7 @@ class MockProcessExecutor : ProcessExecutor {
 
 
 
-    override fun start(vararg command: String): Flowable<String> {
+    override fun start(command:List<String>): Flowable<String> {
         return flowable
     }
 
