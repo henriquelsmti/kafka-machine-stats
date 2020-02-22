@@ -32,7 +32,7 @@ class ProcessStatsLineReader : TopReader<ProcessStatsRecord> {
                 computerIdentifier = computerIdentifier.id,
                 pid = pid,
                 user = groups[2]?.value?.trim() ?: "",
-                rt = groups[3]?.value ?: "",
+                pr = groups[3]?.value ?: "",
                 ni = groups[4]?.value?.toInt() ?: 0,
                 virt = convertToKiloByte(groups[5]?.value ?: "0"),
                 res = convertToKiloByte(groups[6]?.value ?: "0"),
