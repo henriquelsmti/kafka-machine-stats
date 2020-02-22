@@ -24,7 +24,7 @@ class TopProcessReader : ProcessReader {
     private val log = logger()
 
     private val linesToIgnore: List<Regex> = listOf(
-            Regex("\\s*PID\\s+USER\\s+PR\\s+NI\\s+VIRT\\s+RES\\s+SHR\\s+S\\s+%CPU\\s+%MEM\\s+TIME\\+\\s+COMMAND")
+            Regex("\\s*PID\\s+USER\\s+PR\\s+NI\\s+VIRT\\s+RES\\s+SHR\\s+S\\s+%CPU\\s+%MEM\\s+TIME\\+\\s+COMMAND\\s*")
     )
 
     override fun init(): Flowable<KafkaRecord> {
@@ -35,7 +35,7 @@ class TopProcessReader : ProcessReader {
 
         val stream = executor.start("top", "-b")
                 .filter { line ->
-                    linesToIgnore.none { it.matches(line) }
+                    line.isNotBlank()  && linesToIgnore.none { it.matches(line) }
                 }
                 .map { line ->
                     val key = lineReaders.keys.find { regex ->

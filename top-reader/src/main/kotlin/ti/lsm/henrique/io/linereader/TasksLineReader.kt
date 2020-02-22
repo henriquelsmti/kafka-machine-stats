@@ -12,7 +12,7 @@ class TasksLineReader : TopReader<TasksRecord> {
     @Inject
     lateinit var computerIdentifier:ComputerIdentifier
 
-    override val regex: Regex = Regex("Tasks:\\s+(\\d+)\\s+total,\\s+(\\d+)\\s+running,\\s+(\\d+) sleeping,\\s+(\\d+)\\s+stopped,\\s+(\\d+)\\s+zombie")
+    override val regex: Regex = Regex("Tasks:\\s+(\\d+)\\s+total,\\s+(\\d+)\\s+running,\\s+(\\d+) sleeping,\\s+(\\d+)\\s+stopped,\\s+(\\d+)\\s+zombie\\s*")
 
     override fun read(line: String): TasksRecord {
         val matchResult = regex.find(line) ?: throw CannotReadLineException(line)

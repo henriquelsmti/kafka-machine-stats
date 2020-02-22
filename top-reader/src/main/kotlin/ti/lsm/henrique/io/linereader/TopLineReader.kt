@@ -16,7 +16,7 @@ class TopLineReader : TopReader<TopRecord> {
     @Inject
     lateinit var computerIdentifier:ComputerIdentifier
 
-    override val regex: Regex = Regex("top\\s-\\s(\\d{2}:\\d{2}:\\d{2})\\sup\\s+((\\d+)\\s+days?,\\s+)?((\\d+)\\smin,\\s+)?((\\d+:\\d+),\\s+)?(\\d+)\\susers?,\\s+load average:\\s+([\\d.]+),\\s+([\\d.]+),\\s+([\\d.]+)")
+    override val regex: Regex = Regex("top\\s-\\s(\\d{2}:\\d{2}:\\d{2})\\sup\\s+((\\d+)\\s+days?,\\s+)?((\\d+)\\smin,\\s+)?((\\d+:\\d+),\\s+)?(\\d+)\\susers?,\\s+load average:\\s+([\\d.]+),\\s+([\\d.]+),\\s+([\\d.]+)\\s*")
 
     override fun read(line: String): TopRecord {
         val matchResult = regex.find(line) ?: throw CannotReadLineException(line)

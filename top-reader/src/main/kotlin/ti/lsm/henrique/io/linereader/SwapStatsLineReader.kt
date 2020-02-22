@@ -12,7 +12,7 @@ class SwapStatsLineReader : TopReader<SwapStatsRecord> {
     @Inject
     lateinit var computerIdentifier:ComputerIdentifier
 
-    override val regex: Regex = Regex("MiB\\s+Swap:\\s+([\\d.]+)\\s+total,\\s+([\\d.]+)\\s+free,\\s+([\\d.]+)\\s+used.\\s+([\\d.]+)\\s+avail\\s+Mem")
+    override val regex: Regex = Regex("MiB\\s+Swap:\\s+([\\d.]+)\\s+total,\\s+([\\d.]+)\\s+free,\\s+([\\d.]+)\\s+used.\\s+([\\d.]+)\\s+avail\\s+Mem\\s*")
 
     override fun read(line: String): SwapStatsRecord {
         val matchResult = regex.find(line) ?: throw CannotReadLineException(line)

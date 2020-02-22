@@ -45,7 +45,7 @@ class ProcessStatsLineReaderSpec : AnnotationSpec() {
                 computerIdentifier = computerIdentifier.id,
                 pid = 9196,
                 user = "henriqu+",
-                pr = 20,
+                rt = "20",
                 ni = 0,
                 virt = 678416,
                 res = 156956,
@@ -70,7 +70,7 @@ class ProcessStatsLineReaderSpec : AnnotationSpec() {
                 computerIdentifier = computerIdentifier.id,
                 pid = 0,
                 user = "root",
-                pr = 0,
+                rt = "0",
                 ni = 0,
                 virt = 0,
                 res = 0,
@@ -81,6 +81,40 @@ class ProcessStatsLineReaderSpec : AnnotationSpec() {
                 timePlus = timePlus,
                 command = "top"
         ))
+    }
+
+    @Test
+    fun testReaderGigabyte() {
+        val line = "11 root      rt   0       2.5g      2.5g      2.5g S   0.0   0.0   0:00.06 migration+1"
+        val result = processStatsLineReader.read(line)
+
+        val timePlus = Duration.ofMillis(60)
+
+        result.shouldBe(ProcessStatsRecord(
+                key = """{"computerIdentifier":"${computerIdentifier.id}", "pid": ${11}}""",
+                computerIdentifier = computerIdentifier.id,
+                pid = 11,
+                user = "root",
+                rt = "rt",
+                ni = 0,
+                virt = 2621440,
+                res = 2621440,
+                shr = 2621440,
+                s = "S",
+                cpu = 0.0,
+                mem = 0.0,
+                timePlus = timePlus,
+                command = "migration+1"
+        ))
+    }
+
+    @Test
+    fun testReaderLines() {
+        processStatsLineReader.read("2839 henriqu+  20   0 8862392   2.5g  90952 S  25.0  15.7  39:05.44 java")
+        processStatsLineReader.read("3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp")
+        processStatsLineReader.read("11 root      rt   0       2.5g      2.5g      2.5g S   0.0   0.0   0:00.06 migration+1")
+        processStatsLineReader.read("11 root      rt   0       0      0      0 S   0.0   0.0   0:00.06 migration+1")
+        processStatsLineReader.read("1256 root     -51   0       0      0      0 S   3.6   0.0   2:07.34 irq/62-nv+")
     }
 
     @Test

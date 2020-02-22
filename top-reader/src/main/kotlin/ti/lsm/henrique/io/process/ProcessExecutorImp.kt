@@ -45,6 +45,7 @@ class ProcessExecutorImp : ProcessExecutor {
 
         val observable = PublishSubject.create<String>()
         val pocessBuilder = ProcessBuilder(command.asList())
+        pocessBuilder.environment()["LC_ALL"] = "C"
         process = pocessBuilder.start()
         inputStream = BufferedReader(InputStreamReader(process.inputStream))
         pool.submit {

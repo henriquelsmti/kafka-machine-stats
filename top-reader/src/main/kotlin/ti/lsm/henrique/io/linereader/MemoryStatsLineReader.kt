@@ -12,7 +12,7 @@ class MemoryStatsLineReader : TopReader<MemoryStatsRecord> {
     @Inject
     lateinit var computerIdentifier:ComputerIdentifier
 
-    override val regex: Regex = Regex("MiB\\s+Mem\\s+:\\s+([\\d.]+)\\s+total,\\s+([\\d.]+)\\s+free,\\s+([\\d.]+)\\s+used,\\s+([\\d.]+)\\s+buff/cache")
+    override val regex: Regex = Regex("MiB\\s+Mem\\s+:\\s+([\\d.]+)\\s+total,\\s+([\\d.]+)\\s+free,\\s+([\\d.]+)\\s+used,\\s+([\\d.]+)\\s+buff/cache\\s*")
 
     override fun read(line: String): MemoryStatsRecord {
         val matchResult = regex.find(line) ?: throw CannotReadLineException(line)

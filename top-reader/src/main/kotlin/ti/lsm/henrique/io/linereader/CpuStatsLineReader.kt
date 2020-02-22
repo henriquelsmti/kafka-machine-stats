@@ -12,7 +12,7 @@ class CpuStatsLineReader : TopReader<CpuStatsRecord> {
     @Inject
     lateinit var computerIdentifier: ComputerIdentifier
 
-    override val regex: Regex = Regex("%Cpu\\(s\\):\\s+([\\d.]+)\\s+us,\\s+([\\d.]+)\\s+sy,\\s+([\\d.]+)\\s+ni,\\s+([\\d.]+)\\s+id,\\s+([\\d.]+)\\s+wa,\\s+([\\d.]+)\\s+hi,\\s+([\\d.]+)\\s+si,\\s+([\\d.]+)\\s+st")
+    override val regex: Regex = Regex("%Cpu\\(s\\):\\s+([\\d.]+)\\s+us,\\s+([\\d.]+)\\s+sy,\\s+([\\d.]+)\\s+ni,\\s+([\\d.]+)\\s+id,\\s+([\\d.]+)\\s+wa,\\s+([\\d.]+)\\s+hi,\\s+([\\d.]+)\\s+si,\\s+([\\d.]+)\\s+st\\s*")
 
     override fun read(line: String): CpuStatsRecord {
         val matchResult = regex.find(line) ?: throw CannotReadLineException(line)

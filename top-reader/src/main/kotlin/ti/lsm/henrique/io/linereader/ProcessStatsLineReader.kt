@@ -13,7 +13,7 @@ class ProcessStatsLineReader : TopReader<ProcessStatsRecord> {
     @Inject
     lateinit var computerIdentifier: ComputerIdentifier
 
-    override val regex: Regex = Regex("(\\d+)\\s+(.*)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\w+)\\s+([.\\d]+)\\s+([.\\d]+)\\s+(\\d+:\\d+\\.\\d+)\\s+(.*)")
+    override val regex: Regex = Regex("\\s*(\\d+)\\s+(.*)\\s+([\\w-]+)\\s+([\\d-]+)\\s+([\\d.\\w]+)\\s+([\\d.\\w]+)\\s+([\\d.\\w]+)\\s+(\\w+)\\s+([.\\d]+)\\s+([.\\d]+)\\s+(\\d+:\\d+\\.\\d+)\\s+(.*)\\s*")
 
     override fun read(line: String): ProcessStatsRecord {
         val matchResult = regex.find(line) ?: throw throw CannotReadLineException(line)
@@ -32,17 +32,25 @@ class ProcessStatsLineReader : TopReader<ProcessStatsRecord> {
                 computerIdentifier = computerIdentifier.id,
                 pid = pid,
                 user = groups[2]?.value?.trim() ?: "",
-                pr = groups[3]?.value?.toInt() ?: 0,
+                rt = groups[3]?.value ?: "",
                 ni = groups[4]?.value?.toInt() ?: 0,
-                virt = groups[5]?.value?.toInt() ?: 0,
-                res = groups[6]?.value?.toInt() ?: 0,
-                shr = groups[7]?.value?.toInt() ?: 0,
+                virt = convertToKiloByte(groups[5]?.value ?: "0"),
+                res = convertToKiloByte(groups[6]?.value ?: "0"),
+                shr =  convertToKiloByte(groups[7]?.value ?: "0"),
                 s = groups[8]?.value ?: "",
                 cpu = groups[9]?.value?.toDouble() ?: 0.0,
                 mem = groups[10]?.value?.toDouble() ?: 0.0,
                 timePlus = timePlus,
                 command = groups[12]?.value ?: ""
         )
+    }
+
+    private fun convertToKiloByte(value: String): Int {
+        return if (value.contains("g")) {
+            (value.replace("g", "").toDouble() * 1024 * 1024).toInt()
+        } else {
+            value.toInt()
+        }
     }
 
 }
