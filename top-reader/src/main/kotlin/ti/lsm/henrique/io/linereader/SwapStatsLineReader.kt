@@ -1,8 +1,7 @@
 package ti.lsm.henrique.io.linereader
 
 import ti.lsm.henrique.io.ComputerIdentifier
-import ti.lsm.henrique.io.linereader.exceptions.LineReaderException
-import ti.lsm.henrique.model.MemoryStatsRecord
+import ti.lsm.henrique.io.linereader.exceptions.CannotReadLineException
 import ti.lsm.henrique.model.SwapStatsRecord
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -16,7 +15,7 @@ class SwapStatsLineReader : TopReader<SwapStatsRecord> {
     override val regex: Regex = Regex("MiB\\s+Swap:\\s+([\\d.]+)\\s+total,\\s+([\\d.]+)\\s+free,\\s+([\\d.]+)\\s+used.\\s+([\\d.]+)\\s+avail\\s+Mem")
 
     override fun read(line: String): SwapStatsRecord {
-        val matchResult = regex.find(line) ?: throw LineReaderException("it is not possible to read the line: $line")
+        val matchResult = regex.find(line) ?: throw CannotReadLineException(line)
 
         val groups = matchResult.groups
 

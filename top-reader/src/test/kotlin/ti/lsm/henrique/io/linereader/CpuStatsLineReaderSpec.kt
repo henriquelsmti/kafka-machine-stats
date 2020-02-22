@@ -7,9 +7,9 @@ import io.kotlintest.shouldThrow
 import io.kotlintest.specs.AnnotationSpec
 import io.micronaut.context.ApplicationContext
 import ti.lsm.henrique.io.ComputerIdentifier
-import ti.lsm.henrique.io.linereader.exceptions.LineReaderException
+import ti.lsm.henrique.TestConfigs
+import ti.lsm.henrique.io.linereader.exceptions.CannotReadLineException
 import ti.lsm.henrique.model.CpuStatsRecord
-import ti.lsm.henrique.model.TasksRecord
 
 class CpuStatsLineReaderSpec : AnnotationSpec() {
 
@@ -20,7 +20,7 @@ class CpuStatsLineReaderSpec : AnnotationSpec() {
     
     @BeforeClass
     fun before() {
-        context = ApplicationContext.run()
+        context = ApplicationContext.run(TestConfigs.config)
         computerIdentifier = context.getBean(ComputerIdentifier::class.java)
         cpuStatsLineReader = context.getBean(CpuStatsLineReader::class.java)
     }
@@ -69,9 +69,9 @@ class CpuStatsLineReaderSpec : AnnotationSpec() {
     @Test
     fun testReaderFault() {
         val line = "Tasks - Error"
-        val exception = shouldThrow<LineReaderException> {
+        val exception = shouldThrow<CannotReadLineException> {
             cpuStatsLineReader.read(line)
         }
-        exception.message should startWith("it is not possible to read the line:")
+        exception.message should startWith("Cannot read the line:")
     }
 }

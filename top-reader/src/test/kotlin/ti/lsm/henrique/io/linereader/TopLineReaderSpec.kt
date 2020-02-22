@@ -7,7 +7,8 @@ import io.kotlintest.shouldThrow
 import io.kotlintest.specs.AnnotationSpec
 import io.micronaut.context.ApplicationContext
 import ti.lsm.henrique.io.ComputerIdentifier
-import ti.lsm.henrique.io.linereader.exceptions.LineReaderException
+import ti.lsm.henrique.TestConfigs
+import ti.lsm.henrique.io.linereader.exceptions.CannotReadLineException
 import ti.lsm.henrique.model.LoadAverage
 import ti.lsm.henrique.model.TopRecord
 import java.time.Duration
@@ -17,12 +18,12 @@ class TopLineReaderSpec : AnnotationSpec() {
 
     lateinit var context: ApplicationContext
 
-    lateinit var computerIdentifier:ComputerIdentifier
-    lateinit var topLineReader:TopLineReader
-    
+    lateinit var computerIdentifier: ComputerIdentifier
+    lateinit var topLineReader: TopLineReader
+
     @BeforeClass
     fun before() {
-        context = ApplicationContext.run()
+        context = ApplicationContext.run(TestConfigs.config)
         computerIdentifier = context.getBean(ComputerIdentifier::class.java)
         topLineReader = context.getBean(TopLineReader::class.java)
     }
@@ -34,7 +35,7 @@ class TopLineReaderSpec : AnnotationSpec() {
 
     @Test
     fun testReaderUpMinutes() {
-        
+
         val line = "top - 20:23:27 up 16 min,  1 user,  load average: 0.54, 0.86, 0.78"
         val result = topLineReader.read(line)
         result.shouldBe(TopRecord(
@@ -52,7 +53,7 @@ class TopLineReaderSpec : AnnotationSpec() {
 
     @Test
     fun testReaderUpHoursMinutes() {
-        
+
         val line = "top - 21:19:27 up  2:28,  1 users,  load average: 0.73, 0.81, 0.77"
         val result = topLineReader.read(line)
         result.shouldBe(TopRecord(
@@ -70,7 +71,7 @@ class TopLineReaderSpec : AnnotationSpec() {
 
     @Test
     fun testReaderUpDayHoursMinutes() {
-        
+
         val line = "top - 21:19:27 up 1 day, 2:28,  1 users,  load average: 0.73, 0.81, 0.77"
         val result = topLineReader.read(line)
         result.shouldBe(TopRecord(
@@ -88,7 +89,7 @@ class TopLineReaderSpec : AnnotationSpec() {
 
     @Test
     fun testReaderUpDaysHoursMinutes() {
-        
+
         val line = "top - 21:19:27 up 2 days, 2:28,  1 users,  load average: 0.73, 0.81, 0.77"
         val result = topLineReader.read(line)
         result.shouldBe(TopRecord(
@@ -106,7 +107,7 @@ class TopLineReaderSpec : AnnotationSpec() {
 
     @Test
     fun testReaderUpDayMinutes() {
-        
+
         val line = "top - 20:23:27 up 1 day, 16 min,  1 user,  load average: 0.54, 10.86, 0.78"
         val result = topLineReader.read(line)
         result.shouldBe(TopRecord(
@@ -124,7 +125,7 @@ class TopLineReaderSpec : AnnotationSpec() {
 
     @Test
     fun testReaderUpDaysMinutes() {
-        
+
         val line = "top - 20:23:27 up 2 days, 16 min,  1 user,  load average: 1.54, 10.86, 0.78"
         val result = topLineReader.read(line)
         result.shouldBe(TopRecord(
@@ -142,7 +143,7 @@ class TopLineReaderSpec : AnnotationSpec() {
 
     @Test
     fun testReaderUpDaysMinutesManyUsers() {
-        
+
         val line = "top - 20:23:27 up 2 days, 16 min,  10 user,  load average: 1.54, 10.86, 0.78"
         val result = topLineReader.read(line)
         result.shouldBe(TopRecord(
@@ -160,7 +161,7 @@ class TopLineReaderSpec : AnnotationSpec() {
 
     @Test
     fun testReaderUpDays2Hours2Minutes() {
-        
+
         val line = "top - 21:19:27 up 20 days, 20:28,  1 users,  load average: 0.73, 0.81, 0.77"
         val result = topLineReader.read(line)
         result.shouldBe(TopRecord(
@@ -179,9 +180,9 @@ class TopLineReaderSpec : AnnotationSpec() {
     @Test
     fun testReaderFault() {
         val line = "top - Error"
-        val exception = shouldThrow<LineReaderException> {
+        val exception = shouldThrow<CannotReadLineException> {
             topLineReader.read(line)
         }
-        exception.message should startWith("it is not possible to read the line:")
+        exception.message should startWith("Cannot read the line:")
     }
 }

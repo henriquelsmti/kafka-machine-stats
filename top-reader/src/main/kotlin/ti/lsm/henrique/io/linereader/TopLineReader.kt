@@ -1,7 +1,7 @@
 package ti.lsm.henrique.io.linereader
 
 import ti.lsm.henrique.io.ComputerIdentifier
-import ti.lsm.henrique.io.linereader.exceptions.LineReaderException
+import ti.lsm.henrique.io.linereader.exceptions.CannotReadLineException
 import ti.lsm.henrique.model.LoadAverage
 import ti.lsm.henrique.model.TopRecord
 import java.time.Duration
@@ -19,7 +19,7 @@ class TopLineReader : TopReader<TopRecord> {
     override val regex: Regex = Regex("top\\s-\\s(\\d{2}:\\d{2}:\\d{2})\\sup\\s+((\\d+)\\s+days?,\\s+)?((\\d+)\\smin,\\s+)?((\\d+:\\d+),\\s+)?(\\d+)\\susers?,\\s+load average:\\s+([\\d.]+),\\s+([\\d.]+),\\s+([\\d.]+)")
 
     override fun read(line: String): TopRecord {
-        val matchResult = regex.find(line) ?: throw LineReaderException("it is not possible to read the line: $line")
+        val matchResult = regex.find(line) ?: throw CannotReadLineException(line)
         val groups = matchResult.groups
 
         val load = LoadAverage(

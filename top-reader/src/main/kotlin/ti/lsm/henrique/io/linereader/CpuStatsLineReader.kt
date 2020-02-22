@@ -1,7 +1,7 @@
 package ti.lsm.henrique.io.linereader
 
 import ti.lsm.henrique.io.ComputerIdentifier
-import ti.lsm.henrique.io.linereader.exceptions.LineReaderException
+import ti.lsm.henrique.io.linereader.exceptions.CannotReadLineException
 import ti.lsm.henrique.model.CpuStatsRecord
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -15,7 +15,7 @@ class CpuStatsLineReader : TopReader<CpuStatsRecord> {
     override val regex: Regex = Regex("%Cpu\\(s\\):\\s+([\\d.]+)\\s+us,\\s+([\\d.]+)\\s+sy,\\s+([\\d.]+)\\s+ni,\\s+([\\d.]+)\\s+id,\\s+([\\d.]+)\\s+wa,\\s+([\\d.]+)\\s+hi,\\s+([\\d.]+)\\s+si,\\s+([\\d.]+)\\s+st")
 
     override fun read(line: String): CpuStatsRecord {
-        val matchResult = regex.find(line) ?: throw LineReaderException("it is not possible to read the line: $line")
+        val matchResult = regex.find(line) ?: throw CannotReadLineException(line)
 
         val groups = matchResult.groups
 

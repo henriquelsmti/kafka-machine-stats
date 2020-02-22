@@ -7,7 +7,8 @@ import io.kotlintest.shouldThrow
 import io.kotlintest.specs.AnnotationSpec
 import io.micronaut.context.ApplicationContext
 import ti.lsm.henrique.io.ComputerIdentifier
-import ti.lsm.henrique.io.linereader.exceptions.LineReaderException
+import ti.lsm.henrique.TestConfigs
+import ti.lsm.henrique.io.linereader.exceptions.CannotReadLineException
 import ti.lsm.henrique.model.ProcessStatsRecord
 import java.time.Duration
 
@@ -15,12 +16,12 @@ class ProcessStatsLineReaderSpec : AnnotationSpec() {
 
     lateinit var context: ApplicationContext
 
-    lateinit var computerIdentifier:ComputerIdentifier
-    lateinit var processStatsLineReader:ProcessStatsLineReader
-    
+    lateinit var computerIdentifier: ComputerIdentifier
+    lateinit var processStatsLineReader: ProcessStatsLineReader
+
     @BeforeClass
     fun before() {
-        context = ApplicationContext.run()
+        context = ApplicationContext.run(TestConfigs.config)
         computerIdentifier = context.getBean(ComputerIdentifier::class.java)
         processStatsLineReader = context.getBean(ProcessStatsLineReader::class.java)
     }
@@ -41,8 +42,8 @@ class ProcessStatsLineReaderSpec : AnnotationSpec() {
 
         result.shouldBe(ProcessStatsRecord(
                 key = """{"computerIdentifier":"${computerIdentifier.id}", "pid": ${9196}}""",
-                computerIdentifier= computerIdentifier.id,
-                pid =  9196,
+                computerIdentifier = computerIdentifier.id,
+                pid = 9196,
                 user = "henriqu+",
                 pr = 20,
                 ni = 0,
@@ -66,8 +67,8 @@ class ProcessStatsLineReaderSpec : AnnotationSpec() {
 
         result.shouldBe(ProcessStatsRecord(
                 key = """{"computerIdentifier":"${computerIdentifier.id}", "pid": ${0}}""",
-                computerIdentifier= computerIdentifier.id,
-                pid =  0,
+                computerIdentifier = computerIdentifier.id,
+                pid = 0,
                 user = "root",
                 pr = 0,
                 ni = 0,
@@ -85,9 +86,9 @@ class ProcessStatsLineReaderSpec : AnnotationSpec() {
     @Test
     fun testReaderFault() {
         val line = "Tasks - Error"
-        val exception = shouldThrow<LineReaderException> {
+        val exception = shouldThrow<CannotReadLineException> {
             processStatsLineReader.read(line)
         }
-        exception.message should startWith("it is not possible to read the line:")
+        exception.message should startWith("Cannot read the line:")
     }
 }

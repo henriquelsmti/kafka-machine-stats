@@ -9,6 +9,7 @@ import ti.lsm.henrique.io.exceptions.IOException
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.util.concurrent.Executors
+import javax.annotation.PreDestroy
 
 
 @Prototype
@@ -21,6 +22,7 @@ class ProcessExecutorImp : ProcessExecutor {
     private val pool = Executors.newFixedThreadPool(1)
     private var started: Boolean = false
 
+    @PreDestroy
     override fun close() {
         closed = true
         pool.shutdown()

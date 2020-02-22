@@ -1,3 +1,7 @@
 micronaut:
   application:
     name: top-reader
+
+kafka:
+  bootstrap:
+    servers: localhost:9092

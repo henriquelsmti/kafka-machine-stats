@@ -3,7 +3,6 @@ package ti.lsm.henrique.io.process
 import io.kotlintest.matchers.boolean.shouldBeTrue
 import io.kotlintest.shouldThrow
 import io.kotlintest.specs.AnnotationSpec
-import io.micronaut.context.ApplicationContext
 import ti.lsm.henrique.io.exceptions.IOException
 
 class ProcessExecutorSpec : AnnotationSpec() {

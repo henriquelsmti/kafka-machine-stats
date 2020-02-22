@@ -7,20 +7,20 @@ import io.kotlintest.shouldThrow
 import io.kotlintest.specs.AnnotationSpec
 import io.micronaut.context.ApplicationContext
 import ti.lsm.henrique.io.ComputerIdentifier
-import ti.lsm.henrique.io.linereader.exceptions.LineReaderException
-import ti.lsm.henrique.model.MemoryStatsRecord
+import ti.lsm.henrique.TestConfigs
+import ti.lsm.henrique.io.linereader.exceptions.CannotReadLineException
 import ti.lsm.henrique.model.SwapStatsRecord
 
 class SwapStatsLineReaderSpec : AnnotationSpec() {
 
     lateinit var context: ApplicationContext
 
-    lateinit var computerIdentifier:ComputerIdentifier
-    lateinit var swapStatsLineReader:SwapStatsLineReader
-    
+    lateinit var computerIdentifier: ComputerIdentifier
+    lateinit var swapStatsLineReader: SwapStatsLineReader
+
     @BeforeClass
     fun before() {
-        context = ApplicationContext.run()
+        context = ApplicationContext.run(TestConfigs.config)
         computerIdentifier = context.getBean(ComputerIdentifier::class.java)
         swapStatsLineReader = context.getBean(SwapStatsLineReader::class.java)
     }
@@ -61,9 +61,9 @@ class SwapStatsLineReaderSpec : AnnotationSpec() {
     @Test
     fun testReaderFault() {
         val line = "Tasks - Error"
-        val exception = shouldThrow<LineReaderException> {
+        val exception = shouldThrow<CannotReadLineException> {
             swapStatsLineReader.read(line)
         }
-        exception.message should startWith("it is not possible to read the line:")
+        exception.message should startWith("Cannot read the line:")
     }
 }
