@@ -31,7 +31,7 @@ class SwapStatsLineReaderSpec : AnnotationSpec() {
     }
 
     @Test
-    fun testReaderTasks() {
+    fun testReaderStats() {
         val line = "MiB Swap:   2048.0 total,   2048.0 free,      1.1 used.  13250.3 avail Mem"
         val result = swapStatsLineReader.read(line)
 
@@ -45,7 +45,7 @@ class SwapStatsLineReaderSpec : AnnotationSpec() {
     }
 
     @Test
-    fun testReaderTasks2() {
+    fun testReaderStats2() {
         val line = "MiB Swap:   0.0 total,   0.0 free,      0.0 used.  0.0 avail Mem"
         val result = swapStatsLineReader.read(line)
 

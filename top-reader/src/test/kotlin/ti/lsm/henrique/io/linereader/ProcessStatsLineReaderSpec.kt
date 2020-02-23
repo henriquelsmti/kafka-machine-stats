@@ -32,7 +32,7 @@ class ProcessStatsLineReaderSpec : AnnotationSpec() {
     }
 
     @Test
-    fun testReaderTasks() {
+    fun testReaderStats() {
         val line = "9196 henriqu+  20   0  678416 156956  80068 S  20.9   1.0   1:47.44 chrome"
         val result = processStatsLineReader.read(line)
 
@@ -59,7 +59,7 @@ class ProcessStatsLineReaderSpec : AnnotationSpec() {
     }
 
     @Test
-    fun testReaderTasks2() {
+    fun testReaderStats2() {
         val line = "0 root  0   0  0 0  0 Y  0.0   0.0   0:0.0 top"
         val result = processStatsLineReader.read(line)
 

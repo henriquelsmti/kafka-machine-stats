@@ -31,7 +31,7 @@ class MemoryStatsLineReaderSpec : AnnotationSpec() {
     }
 
     @Test
-    fun testReaderTasks() {
+    fun testReaderStats() {
         val line = "MiB Mem :  16032.1 total,  11889.8 free,   2446.9 used,   1695.4 buff/cache"
         val result = memoryStatsLineReader.read(line)
 
@@ -45,7 +45,7 @@ class MemoryStatsLineReaderSpec : AnnotationSpec() {
     }
 
     @Test
-    fun testReaderTasks2() {
+    fun testReaderStats2() {
         val line = "%MiB Mem :  0.0 total,  0.0 free,   0.0 used,   0.0 buff/cache"
         val result = memoryStatsLineReader.read(line)
 

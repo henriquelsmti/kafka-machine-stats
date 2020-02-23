@@ -32,12 +32,12 @@ class ProcessIoStatsLineReaderSpec : AnnotationSpec() {
     }
 
     @Test
-    fun testReaderTasks() {
+    fun testReaderStats() {
         val line = " 6871 be/4 root        0.00 K/s    0.00 K/s  0.00 %  0.00 % [kworker/6:0-events]"
         val result = processIoStatsLineReader.read(line)
 
         result.shouldBe(ProcessIoStatsRecord(
-                key = computerIdentifier.id,
+                key = """{"computerIdentifier":"${computerIdentifier.id}", "pid": ${6871}}""",
                 pid = 6871,
                 prio = "be/4",
                 user = "root",
@@ -50,12 +50,12 @@ class ProcessIoStatsLineReaderSpec : AnnotationSpec() {
     }
 
     @Test
-    fun testReaderTasks2() {
+    fun testReaderStats2() {
         val line = "6871 be/4 root        100.00 K/s    0.50 K/s  11.00 %  0.05 % java "
         val result = processIoStatsLineReader.read(line)
 
         result.shouldBe(ProcessIoStatsRecord(
-                key = computerIdentifier.id,
+                key = """{"computerIdentifier":"${computerIdentifier.id}", "pid": ${6871}}""",
                 pid = 6871,
                 prio = "be/4",
                 user = "root",

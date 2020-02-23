@@ -31,7 +31,7 @@ class TasksLineReaderSpec : AnnotationSpec() {
     }
 
     @Test
-    fun testReaderTasks() {
+    fun testReaderStats() {
         val line = "Tasks: 268 total,   1 running, 267 sleeping,   0 stopped,   0 zombie"
         val result = tasksLineReader.read(line)
 
@@ -46,7 +46,7 @@ class TasksLineReaderSpec : AnnotationSpec() {
     }
 
     @Test
-    fun testReaderTasks2() {
+    fun testReaderStats2() {
         val line = "Tasks: 268 total,   8 running, 267 sleeping,   10 stopped,   10 zombie"
         val result = tasksLineReader.read(line)
 

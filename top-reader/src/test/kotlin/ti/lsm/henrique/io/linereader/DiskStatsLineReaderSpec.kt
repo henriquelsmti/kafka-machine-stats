@@ -31,7 +31,7 @@ class DiskStatsLineReaderSpec : AnnotationSpec() {
     }
 
     @Test
-    fun testReaderTasks() {
+    fun testReaderStats() {
         val line = "Total DISK READ:         0.00 K/s | Total DISK WRITE:         0.00 K/s"
         val result = diskStatsLineReader.read(line)
 
@@ -43,7 +43,7 @@ class DiskStatsLineReaderSpec : AnnotationSpec() {
     }
 
     @Test
-    fun testReaderTasks2() {
+    fun testReaderStats2() {
         val line = "Total DISK READ:         100.00 K/s | Total DISK WRITE:         0.50 K/s"
         val result = diskStatsLineReader.read(line)
 

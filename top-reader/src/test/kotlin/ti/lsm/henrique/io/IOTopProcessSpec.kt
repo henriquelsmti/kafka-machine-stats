@@ -46,7 +46,7 @@ class IOTopProcessSpec : AnnotationSpec() {
         val topRecord = list.find { it is ProcessIoStatsRecord }
         topRecord.shouldNotBeNull()
         topRecord.shouldBe(ProcessIoStatsRecord(
-                key = computerIdentifier.id,
+                key = """{"computerIdentifier":"${computerIdentifier.id}", "pid": ${6871}}""",
                 pid = 6871,
                 prio = "be/4",
                 user = "root",
@@ -82,7 +82,7 @@ class IOTopProcessSpec : AnnotationSpec() {
         val tasksRecord = list.find { it is ProcessIoStatsRecord }
         tasksRecord.shouldNotBeNull()
         tasksRecord.shouldBe(ProcessIoStatsRecord(
-                key = computerIdentifier.id,
+                key = """{"computerIdentifier":"${computerIdentifier.id}", "pid": ${6871}}""",
                 pid = 6871,
                 prio = "be/4",
                 user = "root",

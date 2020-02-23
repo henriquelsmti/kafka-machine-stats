@@ -31,7 +31,7 @@ class CpuStatsLineReaderSpec : AnnotationSpec() {
     }
 
     @Test
-    fun testReaderTasks() {
+    fun testReaderStats() {
         val line = "%Cpu(s):  1.5 us,  1.0 sy,  1.0 ni, 98.5 id,  1.0 wa,  1.0 hi,  1.0 si,  1.0 st"
         val result = cpuStatsLineReader.read(line)
 
@@ -49,7 +49,7 @@ class CpuStatsLineReaderSpec : AnnotationSpec() {
     }
 
     @Test
-    fun testReaderTasks2() {
+    fun testReaderStats2() {
         val line = "%Cpu(s):  0.0 us,  0.0 sy,  0.0 ni, 0.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st"
         val result = cpuStatsLineReader.read(line)
 
