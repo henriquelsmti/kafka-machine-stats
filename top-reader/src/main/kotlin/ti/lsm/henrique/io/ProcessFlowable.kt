@@ -22,9 +22,7 @@ class ProcessFlowable {
 
     fun init(command: List<String>, lineReaders: List<LineReader<*>>, linesToIgnore: List<Regex>): Flowable<KafkaRecord> {
 
-        val lineReadersMap = lineReaders.associate {
-            it.regex to it
-        }
+        val lineReadersMap = lineReaders.associateBy { it.regex }
 
         val stream = executor.start(command)
                 .filter { line ->
