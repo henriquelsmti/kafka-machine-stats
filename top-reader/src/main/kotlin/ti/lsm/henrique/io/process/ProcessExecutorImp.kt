@@ -21,6 +21,7 @@ class ProcessExecutorImp : ProcessExecutor {
     private val log = logger()
     private val pool = Executors.newFixedThreadPool(1)
     private var started: Boolean = false
+    private var command: String = ""
 
     @PreDestroy
     override fun close() {
@@ -28,6 +29,7 @@ class ProcessExecutorImp : ProcessExecutor {
         pool.shutdown()
         inputStream.close()
         process.destroy()
+        log.info("Process $command stoped with success.")
     }
 
     override fun isStoped(): Boolean {
@@ -35,12 +37,12 @@ class ProcessExecutorImp : ProcessExecutor {
     }
 
 
-    override fun start(command:List<String>): Flowable<String> {
+    override fun start(command: List<String>): Flowable<String> {
 
         if (started) {
             throw IOException("ProcessExecutor started!")
         }
-
+        this.command = command.joinToString(separator = " ")
         started = true
 
         val observable = PublishSubject.create<String>()
@@ -57,7 +59,11 @@ class ProcessExecutorImp : ProcessExecutor {
                     }
                 }
             } catch (e: Exception) {
-                log.error(e.message ?: "Null", e)
+                if (closed) {
+                    log.info("Process ${this.command} stoped.")
+                } else {
+                    log.error(e.message ?: "Null", e)
+                }
                 throw e
             }
         }
