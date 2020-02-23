@@ -11,4 +11,4 @@ data class ProcessIoStatsRecord(
         val swapin: Double,
         val io: Double,
         val command:String
-) : KafkaRecord(key, "disk-stats-record")
+) : KafkaRecord(key, "process-disk-stats-record")

@@ -22,9 +22,10 @@ class ProcessIoStatsLineReader : IOTopReader<ProcessIoStatsRecord> {
 
         val groups = matchResult.groups
 
+        val pid = groups[1]?.value?.toInt() ?: 0
         return ProcessIoStatsRecord(
-                key = computerIdentifier.id,
-                pid = groups[1]?.value?.toInt() ?: 0,
+                key = """{"computerIdentifier":"${computerIdentifier.id}", "pid": ${pid}}""",
+                pid = pid,
                 prio = groups[2]?.value ?: "",
                 user = groups[3]?.value?.trim() ?: "",
                 diskRead = groups[4]?.value?.toDouble() ?: 0.0,
