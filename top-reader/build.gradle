@@ -29,23 +29,20 @@ dependencies {
     kapt platform("io.micronaut:micronaut-bom:$micronautVersion")
     kapt "io.micronaut:micronaut-inject-java"
     kapt "io.micronaut:micronaut-validation"
-    kaptTest platform("io.micronaut:micronaut-bom:$micronautVersion")
-    kaptTest "io.micronaut:micronaut-inject-java"
-    runtimeOnly "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.8"
-    runtimeOnly "ch.qos.logback:logback-classic:1.2.3"
-
     compile 'io.micronaut.configuration:micronaut-kafka'
-
     compile "org.apache.logging.log4j:log4j-api-kotlin:1.0.0"
     compile group: 'com.github.oshi', name: 'oshi-core', version: '4.4.0'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.13.0'
+    runtimeOnly "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.8"
+    runtimeOnly "ch.qos.logback:logback-classic:1.2.3"
 
 
     testImplementation platform("io.micronaut:micronaut-bom:$micronautVersion")
     testImplementation "io.micronaut.test:micronaut-test-kotlintest"
     testImplementation "io.mockk:mockk:1.9.3"
     testImplementation "io.kotlintest:kotlintest-runner-junit5:3.3.2"
-
+    kaptTest "io.micronaut:micronaut-inject-java"
+    kaptTest platform("io.micronaut:micronaut-bom:$micronautVersion")
     testCompile 'org.apache.kafka:kafka-clients:2.4.0:test'
     testCompile 'org.apache.kafka:kafka_2.12:2.4.0'
     testCompile 'org.apache.kafka:kafka_2.12:2.4.0:test'
@@ -53,7 +50,7 @@ dependencies {
 
 test.classpath += configurations.developmentOnly
 
-mainClassName = "top.reader.Application"
+mainClassName = "ti.lsm.henrique.Application"
 
 test {
     useJUnitPlatform()

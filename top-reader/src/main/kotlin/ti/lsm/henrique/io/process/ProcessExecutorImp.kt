@@ -15,12 +15,11 @@ import javax.inject.Inject
 @Prototype
 class ProcessExecutorImp : ProcessExecutor {
 
-
     @Inject
     lateinit var lineEmitter:LineEmitter
 
-    private lateinit var process: Process
     private var closed = false
+    private lateinit var process: Process
     private lateinit var reader: BufferedReader
     private val log = logger()
     private var started: Boolean = false
@@ -41,19 +40,18 @@ class ProcessExecutorImp : ProcessExecutor {
 
 
     override fun start(command: List<String>): Flowable<String> {
-
         if (started) {
             throw IOException("ProcessExecutor started!")
         }
         this.command = command.joinToString(separator = " ")
         started = true
 
-        val observable = PublishSubject.create<String>()
+        val publish = PublishSubject.create<String>()
         val pocessBuilder = ProcessBuilder(command)
         pocessBuilder.environment()["LC_ALL"] = "C"
         process = pocessBuilder.start()
         reader = BufferedReader(InputStreamReader(process.inputStream))
-        lineEmitter.registre(reader, observable)
-        return observable.toFlowable(BackpressureStrategy.LATEST)
+        lineEmitter.registre(reader, publish)
+        return publish.toFlowable(BackpressureStrategy.LATEST)
     }
 }

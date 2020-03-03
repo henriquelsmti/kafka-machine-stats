@@ -12,24 +12,24 @@ import javax.inject.Singleton
 @Singleton
 class LineEmitter {
 
-    private val readersAndFlowables = ConcurrentHashMap<BufferedReader, PublishSubject<String>>()
+    private val readersAndPublishers = ConcurrentHashMap<BufferedReader, PublishSubject<String>>()
 
     private val pool = Executors.newFixedThreadPool(1)
     private val log = logger()
     private var future: Future<*>? = null
 
 
-    fun registre(reader: BufferedReader, observable: PublishSubject<String>) {
-        readersAndFlowables[reader] = observable
+    fun registre(reader: BufferedReader, publisher: PublishSubject<String>) {
+        readersAndPublishers[reader] = publisher
         checkFuture()
     }
 
     fun unregister(reader: BufferedReader) {
-        readersAndFlowables.remove(reader)
+        readersAndPublishers.remove(reader)
     }
 
-    fun getReadersAndFlowables():Map<BufferedReader, PublishSubject<String>>{
-        return readersAndFlowables.toMap()
+    fun getReadersAndFlowables(): Map<BufferedReader, PublishSubject<String>> {
+        return readersAndPublishers.toMap()
     }
 
     @PreDestroy
@@ -47,10 +47,10 @@ class LineEmitter {
         future = pool.submit {
             while (true) {
                 try {
-                    readersAndFlowables.forEach { (reader: BufferedReader, observable: PublishSubject<String>) ->
+                    readersAndPublishers.forEach { (reader: BufferedReader, publisher: PublishSubject<String>) ->
                         val line = reader.readLine()
                         if (line != null) {
-                            observable.onNext(line)
+                            publisher.onNext(line)
                         }
                     }
                 } catch (e: Exception) {
@@ -59,6 +59,4 @@ class LineEmitter {
             }
         }
     }
-
-
 }
