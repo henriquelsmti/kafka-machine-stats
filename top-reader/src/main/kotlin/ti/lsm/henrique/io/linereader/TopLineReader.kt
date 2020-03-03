@@ -3,7 +3,7 @@ package ti.lsm.henrique.io.linereader
 import ti.lsm.henrique.io.ComputerIdentifier
 import ti.lsm.henrique.io.linereader.exceptions.CannotReadLineException
 import ti.lsm.henrique.model.LoadAverage
-import ti.lsm.henrique.model.TopRecord
+import ti.lsm.henrique.model.SystemStatsRecord
 import java.time.Duration
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -11,14 +11,14 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class TopLineReader : TopReader<TopRecord> {
+class TopLineReader : TopReader<SystemStatsRecord> {
 
     @Inject
     lateinit var computerIdentifier:ComputerIdentifier
 
     override val regex: Regex = Regex("top\\s-\\s(\\d{2}:\\d{2}:\\d{2})\\sup\\s+((\\d+)\\s+days?,\\s+)?((\\d+)\\smin,\\s+)?((\\d+:\\d+),\\s+)?(\\d+)\\susers?,\\s+load average:\\s+([\\d.]+),\\s+([\\d.]+),\\s+([\\d.]+)\\s*")
 
-    override fun read(line: String): TopRecord {
+    override fun read(line: String): SystemStatsRecord {
         val matchResult = regex.find(line) ?: throw CannotReadLineException(line)
         val groups = matchResult.groups
 
@@ -49,7 +49,7 @@ class TopLineReader : TopReader<TopRecord> {
 
         val users = (groups[8]?.value ?: "1").toInt()
 
-        return TopRecord(
+        return SystemStatsRecord(
                 key = computerIdentifier.id,
                 time = time,
                 upTime = upTime,

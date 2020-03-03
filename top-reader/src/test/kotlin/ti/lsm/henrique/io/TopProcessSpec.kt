@@ -45,9 +45,9 @@ class TopProcessSpec : AnnotationSpec() {
         mockProcessExecutor.observable.onNext(lostLine)
 
         list.isNotEmpty().shouldBeTrue()
-        val topRecord = list.find { it is TopRecord }
+        val topRecord = list.find { it is SystemStatsRecord }
         topRecord.shouldNotBeNull()
-        topRecord.shouldBe(TopRecord(
+        topRecord.shouldBe(SystemStatsRecord(
                 key = computerIdentifier.id,
                 time = LocalTime.of(20, 23, 27),
                 upTime = Duration.ofMinutes(16),
@@ -74,9 +74,9 @@ class TopProcessSpec : AnnotationSpec() {
         mockProcessExecutor.observable.onNext("top - 20:23:27 up 16 min,  1 user,  load average: 0.54, 0.86, 0.78")
         mockProcessExecutor.observable.onNext("Tasks: 268 total,   1 running, 267 sleeping,   0 stopped,   0 zombie")
         list.isNotEmpty().shouldBeTrue()
-        val topRecord = list.find { it is TopRecord }
+        val topRecord = list.find { it is SystemStatsRecord }
         topRecord.shouldNotBeNull()
-        topRecord.shouldBe(TopRecord(
+        topRecord.shouldBe(SystemStatsRecord(
                 key = computerIdentifier.id,
                 time = LocalTime.of(20, 23, 27),
                 upTime = Duration.ofMinutes(16),
@@ -114,7 +114,7 @@ class TopProcessSpec : AnnotationSpec() {
         list.size.shouldBe(1)
         val topRecord = list[0]
         topRecord.shouldNotBeNull()
-        topRecord.shouldBe(TopRecord(
+        topRecord.shouldBe(SystemStatsRecord(
                 key = computerIdentifier.id,
                 time = LocalTime.of(20, 23, 27),
                 upTime = Duration.ofMinutes(16),

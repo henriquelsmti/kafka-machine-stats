@@ -6,11 +6,11 @@ import io.kotlintest.shouldBe
 import io.kotlintest.shouldThrow
 import io.kotlintest.specs.AnnotationSpec
 import io.micronaut.context.ApplicationContext
-import ti.lsm.henrique.io.ComputerIdentifier
 import ti.lsm.henrique.TestConfigs
+import ti.lsm.henrique.io.ComputerIdentifier
 import ti.lsm.henrique.io.linereader.exceptions.CannotReadLineException
 import ti.lsm.henrique.model.LoadAverage
-import ti.lsm.henrique.model.TopRecord
+import ti.lsm.henrique.model.SystemStatsRecord
 import java.time.Duration
 import java.time.LocalTime
 
@@ -38,7 +38,7 @@ class TopLineReaderSpec : AnnotationSpec() {
 
         val line = "top - 20:23:27 up 16 min,  1 user,  load average: 0.54, 0.86, 0.78"
         val result = topLineReader.read(line)
-        result.shouldBe(TopRecord(
+        result.shouldBe(SystemStatsRecord(
                 key = computerIdentifier.id,
                 time = LocalTime.of(20, 23, 27),
                 upTime = Duration.ofMinutes(16),
@@ -56,7 +56,7 @@ class TopLineReaderSpec : AnnotationSpec() {
 
         val line = "top - 21:19:27 up  2:28,  1 users,  load average: 0.73, 0.81, 0.77"
         val result = topLineReader.read(line)
-        result.shouldBe(TopRecord(
+        result.shouldBe(SystemStatsRecord(
                 key = computerIdentifier.id,
                 time = LocalTime.of(21, 19, 27),
                 upTime = Duration.ofHours(2).plusMinutes(28),
@@ -74,7 +74,7 @@ class TopLineReaderSpec : AnnotationSpec() {
 
         val line = "top - 21:19:27 up 1 day, 2:28,  1 users,  load average: 0.73, 0.81, 0.77"
         val result = topLineReader.read(line)
-        result.shouldBe(TopRecord(
+        result.shouldBe(SystemStatsRecord(
                 key = computerIdentifier.id,
                 time = LocalTime.of(21, 19, 27),
                 upTime = Duration.ofDays(1).plusHours(2).plusMinutes(28),
@@ -92,7 +92,7 @@ class TopLineReaderSpec : AnnotationSpec() {
 
         val line = "top - 21:19:27 up 2 days, 2:28,  1 users,  load average: 0.73, 0.81, 0.77"
         val result = topLineReader.read(line)
-        result.shouldBe(TopRecord(
+        result.shouldBe(SystemStatsRecord(
                 key = computerIdentifier.id,
                 time = LocalTime.of(21, 19, 27),
                 upTime = Duration.ofDays(2).plusHours(2).plusMinutes(28),
@@ -110,7 +110,7 @@ class TopLineReaderSpec : AnnotationSpec() {
 
         val line = "top - 20:23:27 up 1 day, 16 min,  1 user,  load average: 0.54, 10.86, 0.78"
         val result = topLineReader.read(line)
-        result.shouldBe(TopRecord(
+        result.shouldBe(SystemStatsRecord(
                 key = computerIdentifier.id,
                 time = LocalTime.of(20, 23, 27),
                 upTime = Duration.ofDays(1).plusMinutes(16),
@@ -128,7 +128,7 @@ class TopLineReaderSpec : AnnotationSpec() {
 
         val line = "top - 20:23:27 up 2 days, 16 min,  1 user,  load average: 1.54, 10.86, 0.78"
         val result = topLineReader.read(line)
-        result.shouldBe(TopRecord(
+        result.shouldBe(SystemStatsRecord(
                 key = computerIdentifier.id,
                 time = LocalTime.of(20, 23, 27),
                 upTime = Duration.ofDays(2).plusMinutes(16),
@@ -146,7 +146,7 @@ class TopLineReaderSpec : AnnotationSpec() {
 
         val line = "top - 20:23:27 up 2 days, 16 min,  10 user,  load average: 1.54, 10.86, 0.78"
         val result = topLineReader.read(line)
-        result.shouldBe(TopRecord(
+        result.shouldBe(SystemStatsRecord(
                 key = computerIdentifier.id,
                 time = LocalTime.of(20, 23, 27),
                 upTime = Duration.ofDays(2).plusMinutes(16),
@@ -164,7 +164,7 @@ class TopLineReaderSpec : AnnotationSpec() {
 
         val line = "top - 21:19:27 up 20 days, 20:28,  1 users,  load average: 0.73, 0.81, 0.77"
         val result = topLineReader.read(line)
-        result.shouldBe(TopRecord(
+        result.shouldBe(SystemStatsRecord(
                 key = computerIdentifier.id,
                 time = LocalTime.of(21, 19, 27),
                 upTime = Duration.ofDays(20).plusHours(20).plusMinutes(28),
