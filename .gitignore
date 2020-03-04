@@ -1,14 +1,3 @@
-/top-reader/.gradle/**
-/.idea/**
-/top-reader/.idea/**
-/top-reader/gradle/**
-/top-reader/build/**
-
-/top-reader-model/.idea/**
-/top-reader-model/gradle/**
-/top-reader-model/build/**
-/top-reader-model/.gradle/**
-
 Thumbs.db
 .DS_Store
 .gradle
