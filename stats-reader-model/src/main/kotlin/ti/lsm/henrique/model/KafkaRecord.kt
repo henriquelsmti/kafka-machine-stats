@@ -1,3 +1,9 @@
 package ti.lsm.henrique.model
 
-abstract class KafkaRecord(open val key: String, val topic: String)
+import com.fasterxml.jackson.annotation.JsonIgnore
+
+abstract class KafkaRecord(
+        open val key: String,
+        @get:JsonIgnore
+        val topic: String
+)

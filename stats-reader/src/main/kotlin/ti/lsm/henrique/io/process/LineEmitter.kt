@@ -51,6 +51,8 @@ class LineEmitter {
                         val line = reader.readLine()
                         if (line != null) {
                             publisher.onNext(line)
+                        } else {
+                            Thread.sleep(500)
                         }
                     }
                 } catch (e: Exception) {

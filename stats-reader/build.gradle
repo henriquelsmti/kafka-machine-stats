@@ -37,7 +37,7 @@ dependencies {
     runtimeOnly "ch.qos.logback:logback-classic:1.2.3"
 
     //Local dependencies
-    compile 'ti.lsm.henrique:top-reader-model:1.0-SNAPSHOT'
+    compile 'ti.lsm.henrique:stats-reader-model:1.0.0-SNAPSHOT'
 
     testImplementation platform("io.micronaut:micronaut-bom:$micronautVersion")
     testImplementation "io.micronaut.test:micronaut-test-kotlintest"
