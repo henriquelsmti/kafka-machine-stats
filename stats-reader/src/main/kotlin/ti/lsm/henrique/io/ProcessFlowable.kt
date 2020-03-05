@@ -2,7 +2,7 @@ package ti.lsm.henrique.io
 
 import io.micronaut.context.annotation.Prototype
 import io.reactivex.Flowable
-import org.apache.logging.log4j.kotlin.logger
+import org.slf4j.LoggerFactory
 import ti.lsm.henrique.io.linereader.LineReader
 import ti.lsm.henrique.io.process.ProcessExecutor
 import ti.lsm.henrique.model.KafkaRecord
@@ -12,7 +12,7 @@ import javax.inject.Inject
 @Prototype
 class ProcessFlowable {
 
-    private val log = logger()
+    private val log = LoggerFactory.getLogger(ProcessFlowable::class.java)
 
     @Inject
     lateinit var computerIdentifier: ComputerIdentifier
@@ -38,7 +38,7 @@ class ProcessFlowable {
         val lost = stream.filter {
             it.second == null
         }.map {
-            log.warn("line is not readable" to it.first)
+            log.warn("line is not readable to ${it.first}")
             LostRecord(computerIdentifier.id, it.first)
         }
 

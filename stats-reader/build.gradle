@@ -31,7 +31,6 @@ dependencies {
     kapt "io.micronaut:micronaut-inject-java"
     kapt "io.micronaut:micronaut-validation"
     compile 'io.micronaut.configuration:micronaut-kafka'
-    compile "org.apache.logging.log4j:log4j-api-kotlin:1.0.0"
     compile group: 'com.github.oshi', name: 'oshi-core', version: '4.4.0'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.13.0'
     runtimeOnly "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.8"

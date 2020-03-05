@@ -1,5 +1,7 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.3.61'
+    id "org.jetbrains.kotlin.jvm" version "1.3.50"
+    id "org.jetbrains.kotlin.kapt" version "1.3.50"
+    id "org.jetbrains.kotlin.plugin.allopen" version "1.3.50"
     id 'maven'
 }
 
@@ -12,7 +14,17 @@ repositories {
 }
 
 dependencies {
+    implementation platform("io.micronaut:micronaut-bom:$micronautVersion")
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    kapt platform("io.micronaut:micronaut-bom:$micronautVersion")
+    implementation "io.micronaut:micronaut-runtime"
+    runtime("io.micronaut:micronaut-core")
+    compile "io.micronaut:micronaut-inject-java"
+    kapt "io.micronaut:micronaut-inject-java"
+}
+
+allOpen {
+    annotation("io.micronaut.aop.Around")
 }
 
 compileKotlin {

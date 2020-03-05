@@ -4,7 +4,7 @@ import io.micronaut.context.annotation.Prototype
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.subjects.PublishSubject
-import org.apache.logging.log4j.kotlin.logger
+import org.slf4j.LoggerFactory
 import ti.lsm.henrique.io.exceptions.IOException
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -21,7 +21,7 @@ class ProcessExecutorImp : ProcessExecutor {
     private var closed = false
     private lateinit var process: Process
     private lateinit var reader: BufferedReader
-    private val log = logger()
+    private val log = LoggerFactory.getLogger(ProcessExecutorImp::class.java)
     private var started: Boolean = false
     private var command: String = ""
 

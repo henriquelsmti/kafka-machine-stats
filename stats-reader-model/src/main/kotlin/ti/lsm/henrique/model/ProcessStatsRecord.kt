@@ -2,6 +2,9 @@ package ti.lsm.henrique.model
 
 import java.time.Duration
 
+import io.micronaut.core.annotation.Introspected
+
+@Introspected
 data class ProcessStatsRecord(override val key: String,
                               val computerIdentifier:String,
                               val pid:Int,

@@ -16,7 +16,7 @@ class IOTopProcessReader : ProcessReader {
     lateinit var processFlowable:ProcessFlowable
 
     private val linesToIgnore: List<Regex> = listOf(
-            Regex("\\s*PID\\s+PRIO\\s+USER\\s+DISK\\s+READ\\s+DISK\\s+WRITE\\s+SWAPIN\\s+IO>\\s+COMMAND\\s*"),
+            Regex("\\s*PID\\s+PRIO\\s+USER\\s+DISK\\s+READ\\s+DISK\\s+WRITE\\s+SWAPIN\\s+IO>?\\s+COMMAND\\s*"),
             Regex("Current\\s+DISK\\s+READ:.*")
     )
 

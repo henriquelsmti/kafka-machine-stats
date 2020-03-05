@@ -1,5 +1,8 @@
 package ti.lsm.henrique.model
 
+import io.micronaut.core.annotation.Introspected
+
+@Introspected
 data class MemoryStatsRecord(override val key: String,
                              val total:Double,
                              val free:Double,

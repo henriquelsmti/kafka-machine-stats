@@ -1,5 +1,7 @@
 package ti.lsm.henrique.model
+import io.micronaut.core.annotation.Introspected
 
+@Introspected
 data class CpuStatsRecord(override val key: String,
                           val us:Double,
                           val sy:Double,

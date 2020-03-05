@@ -1,5 +1,8 @@
 package ti.lsm.henrique.model
 
+import io.micronaut.core.annotation.Introspected
+
+@Introspected
 data class TasksRecord(override val key: String,
                        val total:Int,
                        val running:Int,

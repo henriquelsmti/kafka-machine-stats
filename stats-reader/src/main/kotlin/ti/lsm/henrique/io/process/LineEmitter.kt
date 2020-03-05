@@ -1,7 +1,7 @@
 package ti.lsm.henrique.io.process
 
 import io.reactivex.subjects.PublishSubject
-import org.apache.logging.log4j.kotlin.logger
+import org.slf4j.LoggerFactory
 import java.io.BufferedReader
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.Executors
@@ -15,7 +15,7 @@ class LineEmitter {
     private val readersAndPublishers = ConcurrentHashMap<BufferedReader, PublishSubject<String>>()
 
     private val pool = Executors.newFixedThreadPool(1)
-    private val log = logger()
+    private val log = LoggerFactory.getLogger(LineEmitter::class.java)
     private var future: Future<*>? = null
 
 
