@@ -10,4 +10,8 @@ data class ComputerRecord(
         val baseboard: String,
         val processorIdentifier: String,
         val processors: String
-) : KafkaRecord(key, "computer-record")
+) : KafkaRecord(key, topic) {
+    companion object {
+        const val topic = "computer-record"
+    }
+}

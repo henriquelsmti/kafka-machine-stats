@@ -19,4 +19,8 @@ data class ProcessStatsRecord(override val key: String,
                               val mem:Double,
                               val timePlus:Duration,
                               val command:String
-) : KafkaRecord(key, "process-stats-record")
+) : KafkaRecord(key, topic) {
+    companion object {
+        const val topic = "process-stats-record"
+    }
+}

@@ -7,4 +7,8 @@ data class DiskStatsRecord(
         override val key: String,
         val totalRead: Double,
         val totalWrite: Double
-) : KafkaRecord(key, "disk-stats-record")
+) : KafkaRecord(key, topic) {
+    companion object {
+        const val topic = "disk-stats-record"
+    }
+}

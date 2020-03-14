@@ -13,4 +13,8 @@ data class ProcessIoStatsRecord(
         val swapin: Double,
         val io: Double,
         val command:String
-) : KafkaRecord(key, "process-disk-stats-record")
+) : KafkaRecord(key, topic) {
+    companion object {
+        const val topic = "process-disk-stats-record"
+    }
+}

@@ -11,4 +11,8 @@ data class SystemStatsRecord(override val key: String,
                              val upTime: Duration,
                              val users: Int,
                              val loadAverage: LoadAverage
-) : KafkaRecord(key, "system-stats-record")
+) : KafkaRecord(key, topic) {
+    companion object {
+        const val topic = "system-stats-record"
+    }
+}

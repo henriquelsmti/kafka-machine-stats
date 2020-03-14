@@ -8,4 +8,8 @@ data class SwapStatsRecord(override val key: String,
                            val free:Double,
                            val used:Double,
                            val availMem:Double
-) : KafkaRecord(key, "swap-stats-record")
+) : KafkaRecord(key, topic) {
+    companion object {
+        const val topic = "swap-stats-record"
+    }
+}

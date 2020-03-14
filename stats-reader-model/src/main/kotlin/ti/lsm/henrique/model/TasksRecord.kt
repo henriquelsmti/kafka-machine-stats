@@ -9,4 +9,9 @@ data class TasksRecord(override val key: String,
                        val sleeping:Int,
                        val stopped:Int,
                        val zombie:Int
-) : KafkaRecord(key, "tasks-record")
+) : KafkaRecord(key, topic) {
+    companion object {
+        const val topic = "tasks-record"
+    }
+}
+

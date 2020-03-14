@@ -11,4 +11,8 @@ data class CpuStatsRecord(override val key: String,
                           val hi:Double,
                           val si:Double,
                           val st:Double
-) : KafkaRecord(key, "cpu-stats-record")
+) : KafkaRecord(key, topic) {
+    companion object {
+        const val topic = "cpu-stats-record"
+    }
+}
