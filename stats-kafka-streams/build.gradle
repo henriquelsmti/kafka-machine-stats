@@ -1,0 +1,74 @@
+plugins {
+    id "groovy"
+    id "com.github.johnrengelman.shadow" version "5.2.0"
+    id "application"
+    id 'maven'
+}
+
+
+version "0.1"
+group "stats.kafka.streams"
+
+repositories {
+    mavenCentral()
+    maven { url "https://jcenter.bintray.com" }
+    mavenLocal()
+}
+
+configurations {
+    // for dependencies that are needed for development only
+    developmentOnly
+}
+
+dependencies {
+    compileOnly platform("io.micronaut:micronaut-bom:$micronautVersion")
+    compileOnly "io.micronaut:micronaut-inject-groovy"
+    implementation platform("io.micronaut:micronaut-bom:$micronautVersion")
+    implementation "io.micronaut.configuration:micronaut-kafka"
+    implementation "io.micronaut:micronaut-http-client"
+    implementation "io.micronaut.configuration:micronaut-kafka-streams"
+    implementation "io.micronaut:micronaut-http-server-netty"
+    implementation "io.micronaut:micronaut-runtime-groovy"
+    implementation "io.micronaut:micronaut-validation"
+    implementation "javax.annotation:javax.annotation-api"
+    runtimeOnly "ch.qos.logback:logback-classic:1.2.3"
+
+    compile 'org.codehaus.groovy:groovy:3.0.2'
+    compile 'org.codehaus.groovy:groovy-json:3.0.2'
+    compile 'org.codehaus.groovy:groovy-macro:3.0.2'
+    compile 'org.codehaus.groovy:groovy-nio:3.0.2'
+    compile 'org.codehaus.groovy:groovy-sql:3.0.2'
+    compile 'org.codehaus.groovy:groovy-templates:3.0.2'
+    compile 'org.codehaus.groovy:groovy-test:3.0.2'
+    compile 'org.codehaus.groovy:groovy-xml:3.0.2'
+
+
+
+    //Local dependencies
+    compile 'ti.lsm.henrique:stats-reader-model:1.0.0-SNAPSHOT'
+
+
+    testCompileOnly platform("io.micronaut:micronaut-bom:$micronautVersion")
+    testImplementation platform("io.micronaut:micronaut-bom:$micronautVersion")
+    testImplementation("org.spockframework:spock-core") {
+        exclude group: "org.codehaus.groovy", module: "groovy-all"
+    }
+    testImplementation "io.micronaut:micronaut-inject-groovy"
+    testImplementation "io.micronaut.test:micronaut-test-spock"
+    testImplementation "io.micronaut.test:micronaut-test-junit5"
+    testRuntimeOnly "org.junit.vintage:junit-vintage-engine:5.5.0"
+}
+
+test.classpath += configurations.developmentOnly
+
+mainClassName = "ti.lsm.henrique.streams.Application"
+
+shadowJar {
+    mergeServiceFiles()
+}
+
+run.classpath += configurations.developmentOnly
+run.jvmArgs('-noverify', '-XX:TieredStopAtLevel=1', '-Dcom.sun.management.jmxremote')
+tasks.withType(GroovyCompile) {
+    groovyOptions.forkOptions.jvmArgs.add('-Dgroovy.parameters=true')
+}

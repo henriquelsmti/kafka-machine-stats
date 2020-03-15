@@ -1,0 +1,9 @@
+---
+micronaut:
+  application:
+    name: stats-kafka-streams
+
+---
+kafka:
+  bootstrap:
+    servers: localhost:9092
