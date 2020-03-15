@@ -23,7 +23,7 @@ class GeneralMachineStatsStream {
 
     private static Logger LOG = LoggerFactory.getLogger(GeneralMachineStatsStream)
 
-    public static final String GENERAL_MACHINE_STATS = "general-machine-stats"
+    public static final String GENERAL_MACHINE_STATS = 'general-machine-stats'
 
     @Inject
     @Named(SystemStatsRecord.topic)
@@ -58,7 +58,7 @@ class GeneralMachineStatsStream {
 
     @Bean
     @Singleton
-    @Named(GENERAL_MACHINE_STATS)
+    @Named('general-machine-stats')
     KStream<String, GeneralMachineStats> generalMachineStatsStream() {
 
         final JoinWindows windows = JoinWindows.of(Duration.ofMinutes(1))

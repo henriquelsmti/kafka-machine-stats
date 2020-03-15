@@ -19,14 +19,14 @@ import java.time.Duration
 @CompileStatic
 class ProcessWithGeneralStream {
 
-    public static final String PROCESS_WITH_GENERAL = "process-with-general"
+    public static final String PROCESS_WITH_GENERAL = 'process-with-general'
 
     @Inject
-    @Named(GeneralMachineStatsStream.GENERAL_MACHINE_STATS)
+    @Named('general-machine-stats')
     KStream<String, GeneralMachineStats> generalMachineStatsStream
 
     @Inject
-    @Named(ProcessResourcesUsageStream.PROCESS_RESOURCES_USAGE)
+    @Named('process-resources-usage')
     KStream<String, ProcessResourcesUsage> processResourcesUsageStream
 
     @Inject
@@ -34,7 +34,7 @@ class ProcessWithGeneralStream {
 
     @Bean
     @Singleton
-    @Named(PROCESS_WITH_GENERAL)
+    @Named('process-with-general')
     KStream<String, ProcessWithGeneral> processWithGeneral() {
 
         final JoinWindows windows = JoinWindows.of(Duration.ofMinutes(1))

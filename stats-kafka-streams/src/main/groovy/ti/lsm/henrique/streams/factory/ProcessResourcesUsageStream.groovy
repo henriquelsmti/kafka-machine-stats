@@ -22,7 +22,7 @@ import java.time.Duration
 @CompileStatic
 class ProcessResourcesUsageStream {
 
-    public static final String PROCESS_RESOURCES_USAGE = "process-resources-usage"
+    public static final String PROCESS_RESOURCES_USAGE = 'process-resources-usage'
 
     private static Logger LOG = LoggerFactory.getLogger(ProcessResourcesUsageStream)
 
@@ -47,7 +47,7 @@ class ProcessResourcesUsageStream {
 
     @Bean
     @Singleton
-    @Named(PROCESS_RESOURCES_USAGE)
+    @Named('process-resources-usage')
     KStream<String, ProcessResourcesUsage> processResourcesUsageStream() {
 
         final JoinWindows windows = JoinWindows.of(Duration.ofMinutes(1))
