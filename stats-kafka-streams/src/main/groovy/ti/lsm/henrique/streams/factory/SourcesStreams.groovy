@@ -6,6 +6,7 @@ import io.micronaut.context.annotation.Bean
 import io.micronaut.context.annotation.Factory
 import org.apache.kafka.streams.kstream.GlobalKTable
 import org.apache.kafka.streams.kstream.KStream
+import org.apache.kafka.streams.kstream.Materialized
 import ti.lsm.henrique.model.*
 import ti.lsm.henrique.streams.consumeds.*
 
@@ -99,6 +100,6 @@ class SourcesStreams {
     @Singleton
     @Named(ComputerRecord.topic)
     GlobalKTable<String, ComputerRecord> computerRecordTable() {
-        builder.globalTable(ComputerRecord.topic, computerRecordConsumed)
+        builder.globalTable(ComputerRecord.topic, computerRecordConsumed, Materialized.as(ComputerRecord.topic))
     }
 }
